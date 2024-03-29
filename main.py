@@ -24,9 +24,11 @@ try:
 except Exception as e:
     print(e)
 
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
+
 
 @app.post("/students/")
 async def create_student(student: Student):
@@ -38,6 +40,7 @@ async def create_student(student: Student):
         print(e)
     return {"message": "Student created successfully"}
 
+
 @app.get("/students")
 async def get_students():
     students = []
@@ -45,16 +48,18 @@ async def get_students():
         students.append(Student(**student))
     return students
 
+
 @app.get("/students/{student_id}")
 async def get_student(student_id: str):
     student = await client.students.student.find_one({"_id": ObjectId(student_id)})
     print(student)
     if student:
-        student['id'] = str(student['_id'])
-        del student['_id']
+        student["id"] = str(student["_id"])
+        del student["_id"]
         return student
     else:
         return {"message": "Student not found"}
+
 
 @app.get("/sentry_debug")
 async def sentry_debug():

@@ -1,5 +1,6 @@
-motor
 fastapi
-uvicorn
+motor
+pre-commit
 python-dotenv
 sentry-sdk[fastapi]
+uvicorn
