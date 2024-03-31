@@ -23,9 +23,8 @@ jobs:
       id: metadata
       uses: docker/metadata-action@v5
       with:
-        images: roshank8848/fastapi-app
-        tags: |
-          type: semver,pattern={{version}}
+        images: |
+          roshank8848/fastapi-app
     - name: Build and push the docker image
       uses: docker/build-push-action@v5
       with:
