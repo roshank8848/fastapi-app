@@ -3,6 +3,8 @@ name: build and push image
 on:
   push:
     branches: [ "main" ]
+    tags:
+      - "v*"
   pull_request:
     branches: [ "main" ]
 
@@ -17,8 +19,13 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Docker metadata from dockerhub
+      id: metadata
+      uses: docker/metadata-action@v5
+      with:
+        images: roshank8848/fastapi-app
     - name: Build and push the docker image
       uses: docker/build-push-action@v5
       with:
         push: true
-        tags: roshank8848/fastapi-app:latest
+        tags: ${{ steps.metadata.outputs.tags }}
