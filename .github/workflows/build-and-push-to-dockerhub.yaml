@@ -25,8 +25,15 @@ jobs:
       with:
         images: |
           roshank8848/fastapi-app
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
     - name: Build and push the docker image
       uses: docker/build-push-action@v5
       with:
-        push: true
+        context: .
+        push: ${{ github.event_name != 'pull_request' }}
         tags: ${{ steps.metadata.outputs.tags }}
+        labels: ${{ steps.metadata.outputs.labels }}
