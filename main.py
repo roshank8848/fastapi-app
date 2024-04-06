@@ -1,10 +1,15 @@
 from fastapi import FastAPI
 import motor.motor_asyncio
+from database import Base
 from student import Student
 from bson import ObjectId
 import os
 import sentry_sdk
 from dotenv import load_dotenv
+import models
+import schemas
+from database import engine
+import teachers
 
 sentry_sdk.init(
     dsn=os.getenv("SENTRY_DSN"),
@@ -14,6 +19,10 @@ sentry_sdk.init(
 load_dotenv()
 
 app = FastAPI()
+
+app.include_router(teachers.router)
+
+models.Base.metadata.create_all(bind=engine)
 
 uri = os.getenv("MONGO_URI")
 client = motor.motor_asyncio.AsyncIOMotorClient(uri)
@@ -27,7 +36,7 @@ except Exception as e:
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Hello World we we working on argoCD"}
 
 
 @app.post("/students/")
