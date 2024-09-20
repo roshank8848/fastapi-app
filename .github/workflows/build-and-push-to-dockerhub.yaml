@@ -1,4 +1,4 @@
-name: build and push image
+name: build and push image to dockerhub
 
 on:
   push:
@@ -19,6 +19,11 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+        cache: 'pip' # caching pip dependencies
+    - run: pip install -r requirements.txt
     - name: Docker metadata from dockerhub
       id: metadata
       uses: docker/metadata-action@v5
